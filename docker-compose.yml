@@ -1,0 +1,51 @@
+# version of compose we intend to use
+version: "3"
+
+# A list of services we want created
+services:
+
+    # Declare a new service named "react-app"
+    react-app:
+
+        # Declare where to find a Dockerfile to create an image
+        build:
+
+            # Declare where we want all the files and folders to be pulled from
+            context: .
+
+            # Declare the path to the Dockerfile we want Compose to use
+            dockerfile: Dockerfile.dev
+
+        # Declare port mappings from the Docker Server to the Docker Container
+        ports:
+            - "3000:3000"
+
+        # Declare volume mappings
+        volumes:
+            # Exclude /app/node_modules from mappings to the Docker Server file system
+            - /app/node_modules
+
+            # Map everything from the current directory of the Docker Server (".") to the "/app" directory in the container
+            - .:/app
+
+    # Declare a new service named "tests" for the purpose of running tests
+    tests:
+        
+        # Declare where we want all the files and folders to be pulled from
+        build: 
+
+            # Declare where we want all the files and folders to be pulled from
+            context: .
+
+            # Declare the path to the Dockerfile we want Compose to use
+            dockerfile: Dockerfile.dev
+
+        # Declare volume mappings; we want it the same as the "react-app" service because this is going to be used for testing
+        volumes:
+            # Exclude /app/node_modules from mappings to the Docker Server file system
+            - /app/node_modules
+
+            # Map everything from the current directory of the Docker Server (".") to the "/app" directory in the container
+            - .:/app
+
+        command: ["npm", "run", "test"]

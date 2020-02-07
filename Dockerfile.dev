@@ -1,0 +1,17 @@
+# Declare base image
+FROM node:alpine
+
+# cd to the desired directory in the container
+WORKDIR "/app"
+
+# Copy the package.json file from our workstation to the docker server
+COPY package.json .
+
+# Run "npm install" to install package dependencies based on our package.json file
+RUN npm install
+
+# Copy over all the remaining project files
+COPY ./ ./
+
+# Run npm run start to start our application
+CMD ["npm", "run", "start"]
